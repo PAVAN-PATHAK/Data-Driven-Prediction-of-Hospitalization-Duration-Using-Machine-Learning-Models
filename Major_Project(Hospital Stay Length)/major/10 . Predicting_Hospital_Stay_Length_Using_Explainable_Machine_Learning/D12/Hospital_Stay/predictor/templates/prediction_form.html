@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Stay Prediction</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static "images/background.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-column {
+            width: 48%;
+        }
+
+        .form-column input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            background-color: #f0f0f0;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .logout-link {
+            display: block;
+            margin-top: 15px;
+            color: lightgray;
+            text-decoration: none;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hospital Stay Prediction</h1>
+        <p>Welcome, {{ user.first_name }} {{ user.last_name }}!</p>
+        <form method="POST" action="{% url 'predict_hospital_stay' %}">
+            {% csrf_token %}
+            
+            <!-- Form Rows with Left and Right Columns -->
+            <div class="form-row">
+                <div class="form-column">
+                    <!-- Removed the select dropdown for location, now it is an input field -->
+                    <input type="number" name="location" placeholder="Enter Location id" required>
+                    <input type="number" name="time" placeholder="Year (e.g., 1992)" required>
+                    <input type="number" step="0.01" name="mri_units" placeholder="MRI Units (e.g., 1.43)" required>
+                </div>
+                <div class="form-column">
+                    <input type="number" step="0.01" name="ct_scanners" placeholder="CT Scanners (e.g., 16.71)" required>
+                    <input type="number" step="0.01" name="hospital_beds" placeholder="Hospital Beds (e.g., 1.43)" required>
+                </div>
+            </div>
+            
+            <button type="submit">Predict</button>
+        </form>
+
+        <!-- Display the prediction result -->
+        {% if prediction %}
+            <p class="result">Prediction: {{ prediction }}</p>
+        {% endif %}
+        
+        <!-- Display an error message if input is invalid -->
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        <a class="logout-link" href="{% url 'logout_view' %}">Logout</a>
+    </div>
+
+</body>
+</html>

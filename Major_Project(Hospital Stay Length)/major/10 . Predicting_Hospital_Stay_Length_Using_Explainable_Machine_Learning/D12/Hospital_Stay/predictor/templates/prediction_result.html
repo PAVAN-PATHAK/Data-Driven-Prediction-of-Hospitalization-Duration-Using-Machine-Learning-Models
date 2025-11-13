@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static "images/background.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(17, 16, 16);
+        }
+        .container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: white;
+            border-radius: 10px;
+            width: 50%;
+        }
+        .prediction-text {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .stay-type {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Result</h1>
+
+        <div class="prediction-text">
+            <p>The predicted hospital stay length is:</p>
+            <p>Hospital stay: <span class="stay-type">{{ prediction.days }} days</span></p>
+            <p><span class="stay-type">{{ prediction.stay_type }}</span></p>
+        </div>
+
+        <a href="{% url 'predict_hospital_stay' %}">Make another prediction</a>
+        <a href="{% url 'logout_view' %}">Logout</a>
+    </div>
+</body>
+</html>
